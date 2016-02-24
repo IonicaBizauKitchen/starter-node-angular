@@ -1,5 +1,30 @@
 <div class="jumbotron text-center">
 	<h1>Home Page 4 Life</h1>
+    <p>{{ tagline }}</p>
+    <div id="stripe-form">
+        <form method="POST" id="payment-form" ng-submit="processForm()">
+            <div>
+                <div class="cc-text">User</div>
+                <input type="text" size="30" autocomplete="off" class="card-number" ng-model="user"/>
+            </div>
+            <div>
+                <div class="cc-text">Start Time</div>
+                <input type="text" placeholder="yyyy-mm-ddThh:mm:ssZ" size="30" ng-model="start"/>
+            </div>
+            <div>
+                <div class="cc-text">End Time</div>
+                <input type="text" placeholder="yyyy-mm-ddThh:mm:ssZ" size="30" ng-model="end"/>
+            </div>
+            <div>
+                <div class="cc-text">Distance</div>
+                <input type="text" size="4" ng-model="distance"/>
+            </div>
 
-	<p>{{ tagline }}</p>
+
+            <br>
+            <button type="submit">Submit Payment</button>
+        </form>
+    </div>
+
+
 </div>
