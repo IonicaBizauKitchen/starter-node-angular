@@ -1,30 +1,119 @@
-<div class="jumbotron text-center">
-	<h1>Home Page 4 Life</h1>
-    <p>{{ tagline }}</p>
-    <div id="stripe-form">
-        <form method="POST" id="payment-form" ng-submit="processForm()">
-            <div>
-                <div class="cc-text">User</div>
-                <input type="text" size="30" autocomplete="off" class="card-number" ng-model="user"/>
-            </div>
-            <div>
-                <div class="cc-text">Start Time</div>
-                <input type="text" placeholder="yyyy-mm-ddThh:mm:ssZ" size="30" ng-model="start"/>
-            </div>
-            <div>
-                <div class="cc-text">End Time</div>
-                <input type="text" placeholder="yyyy-mm-ddThh:mm:ssZ" size="30" ng-model="end"/>
-            </div>
-            <div>
-                <div class="cc-text">Distance</div>
-                <input type="text" size="4" ng-model="distance"/>
-            </div>
+<div class="jumbotron text-center col-lg-12">
+    <div class="col-lg-6">
+        <h2>Query 1</h2>
+        <div id="stripe-form">
+            <form method="POST" id="payment-form" ng-submit="processForm()">
+                <div>
+                    <div class="cc-text">User</div>
+                    <!--User-->
+                    <input type="text" placeholder="e.g peyi3uzZdZ" size="30" autocomplete="off" class="card-number" ng-model="user"/>
+                </div>
+                <div>
+                    <div class="cc-text">Start Time</div>
+                    <!--Start Time-->
+                    <input type="text" placeholder="yyyy-mm-ddThh:mm:ssZ" size="30" ng-model="start"/>
+                </div>
+                <div>
+                    <div class="cc-text">End Time</div>
+                    <!--End Time-->
+                    <input type="text" placeholder="yyyy-mm-ddThh:mm:ssZ" size="30" ng-model="end"/>
+                </div>
+                <div>
+                    <div class="cc-text">Distance</div>
+                    <!--Distance-->
+                    <input type="text" placeholder="in km" size="30" ng-model="distance"/>
+                </div>
+
+                <br>
+                <button type="submit">Search</button>
+            </form>
 
 
-            <br>
-            <button type="submit">Submit Payment</button>
-        </form>
+        </div>
+    </div>
+    <div class="col-lg-6">
+        <h2>Query 2</h2>
+        <div id="stripe-form2">
+            <form method="POST" id="payment-form2" ng-submit="processForm()">
+                <div>
+                    <div class="cc-text">User</div>
+                    <!--User-->
+                    <input type="text" placeholder="e.g peyi3uzZdZ" size="30" autocomplete="off" class="card-number" ng-model="user"/>
+                </div>
+                <div>
+                    <div class="cc-text">Start Time</div>
+                    <!--Start Time-->
+                    <input type="text" placeholder="yyyy-mm-ddThh:mm:ssZ" size="30" ng-model="start"/>
+                </div>
+                <div>
+                    <div class="cc-text">End Time</div>
+                    <!--End Time-->
+                    <input type="text" placeholder="yyyy-mm-ddThh:mm:ssZ" size="30" ng-model="end"/>
+                </div>
+                <div>
+                    <div class="cc-text">Distance</div>
+                    <!--Distance-->
+                    <input type="text" placeholder="in km" size="30" ng-model="distance"/>
+                </div>
+
+                <br>
+                <button type="submit">Search</button>
+            </form>
+
+
+        </div>
     </div>
 
 
+
 </div>
+
+
+<!--<div class="table-responsive">-->
+        <a href="/file.csv" target="_blank" ng-show="checked">Download CSV</a>
+<table class="table table-bordered table-condensed table-hover table-striped">
+    <tr>
+        <th>Time Stamp</th>
+        <th>Query UserID</th>
+        <th>Longitude</th>
+        <th>Latitude</th>
+        <th>Battery</th>
+        <th>Model</th>
+        <th>Version</th>
+        <th>Accuracy</th>
+        <th>Confidence</th>
+        <th>Activity</th>
+        <th>Contact UserID</th>
+        <th>Longitude</th>
+        <th>Latitude</th>
+        <th>Battery</th>
+        <th>Model</th>
+        <th>Version</th>
+        <th>Accuracy</th>
+        <th>Confidence</th>
+        <th>Activity</th>
+
+    </tr>
+    <tr ng-repeat="person in people">
+        <td>{{person.end}}</td>
+        <td>{{person.queryUserId}}</td>
+        <td>{{person.queryUserLong}}</td>
+        <td>{{person.queryUserLat}}</td>
+        <td>{{person.queryUserBattery}}</td>
+        <td>{{person.queryUserModel}}</td>
+        <td>{{person.queryUserVersion}}</td>
+        <td>{{person.queryUserAccuracy}}</td>
+        <td>{{person.queryUserConfidence}}</td>
+        <td>{{person.queryUserActivity}}</td>
+        <td>{{person.userId}}</td>
+        <td>{{person.userLong}}</td>
+        <td>{{person.userLat}}</td>
+        <td>{{person.userBattery}}</td>
+        <td>{{person.userModel}}</td>
+        <td>{{person.userVersion}}</td>
+        <td>{{person.userAccuracy}}</td>
+        <td>{{person.userConfidence}}</td>
+        <td>{{person.userActivity}}</td>
+    </tr>
+</table>
+<!--</div>-->
