@@ -34,26 +34,26 @@
     <div class="col-lg-6">
         <h2>Query 2</h2>
         <div id="stripe-form2">
-            <form method="POST" id="payment-form2" ng-submit="processForm()">
-                <div>
-                    <div class="cc-text">User</div>
-                    <!--User-->
-                    <input type="text" placeholder="e.g peyi3uzZdZ" size="30" autocomplete="off" class="card-number" ng-model="user"/>
-                </div>
+            <form method="POST" id="payment-form2" ng-submit="processForm2()">
+                <!--<div>-->
+                    <!--<div class="cc-text">User</div>-->
+                    <!--&lt;!&ndash;User&ndash;&gt;-->
+                    <!--<input type="text" placeholder="e.g peyi3uzZdZ" size="30" autocomplete="off" class="card-number" ng-model="user"/>-->
+                <!--</div>-->
                 <div>
                     <div class="cc-text">Start Time</div>
                     <!--Start Time-->
-                    <input type="text" placeholder="yyyy-mm-ddThh:mm:ssZ" size="30" ng-model="start"/>
+                    <input type="text" placeholder="yyyy-mm-ddThh:mm:ssZ" size="30" ng-model="start2"/>
                 </div>
                 <div>
                     <div class="cc-text">End Time</div>
                     <!--End Time-->
-                    <input type="text" placeholder="yyyy-mm-ddThh:mm:ssZ" size="30" ng-model="end"/>
+                    <input type="text" placeholder="yyyy-mm-ddThh:mm:ssZ" size="30" ng-model="end2"/>
                 </div>
                 <div>
                     <div class="cc-text">Distance</div>
                     <!--Distance-->
-                    <input type="text" placeholder="in km" size="30" ng-model="distance"/>
+                    <input type="text" placeholder="in km" size="30" ng-model="distance2"/>
                 </div>
 
                 <br>
@@ -70,7 +70,8 @@
 
 
 <!--<div class="table-responsive">-->
-        <a href="/file.csv" target="_blank" ng-show="checked">Download CSV</a>
+        <a href="/file.csv" target="_blank" ng-show="checked">Download Query1 CSV</a>
+        <a href="/file2.csv" target="_blank" class="pull-right" ng-show="checked2">Download Query2 CSV</a>
 <table class="table table-bordered table-condensed table-hover table-striped">
     <tr>
         <th>Time Stamp</th>
