@@ -2,7 +2,7 @@
     <div class="col-lg-6">
         <h2>Query 1</h2>
         <div id="stripe-form">
-            <form method="POST" id="payment-form" ng-submit="processForm()">
+            <form method="POST" id="payment-form" ng-submit="processForm(0)">
                 <div>
                     <div class="cc-text">User</div>
                     <!--User-->
@@ -72,6 +72,12 @@
 <!--<div class="table-responsive">-->
         <a href="/file.csv" target="_blank" ng-show="checked">Download Query1 CSV</a>
         <a href="/file2.csv" target="_blank" class="pull-right" ng-show="checked2">Download Query2 CSV</a>
+        <!--<br>-->
+        <span class="text-center" style="position: relative; left:50%;">
+            <span ng-repeat="page in pages">
+                <a href ng-click="paginate(page)" class="pull-center">[{{page}}]</a>
+            </span>
+        </span>
 <table class="table table-bordered table-condensed table-hover table-striped">
     <tr>
         <th>Time Stamp</th>

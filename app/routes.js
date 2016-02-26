@@ -81,12 +81,21 @@ module.exports = function(app) {
             },function(initialusers, callback) {
 //                console.log("Initial User: " +JSON.stringify(initialusers));
 
-                var fieldsToSearch = {}, limit = 50, skip = 0,  sort = '_created_at', sortType= -1;
+                var fieldsToSearch = {}, limit = 0, skip = 0,  sort = '_created_at', sortType= -1;
                 fieldsToSearch._p_user = {'$ne': req.query.user};
                 var results = [];
                 var maxDistance = parseInt(req.query.distance)/6371;
                 var sortQ = {};
                 sortQ[sort] = sortType;
+//                if(req.query.limit)
+//
+//
+//                if(req.query.skip) {
+//                    skip = parseInt(req.query.skip);
+//                    limit = 20;
+//                }
+
+                console.log(fieldsToSearch);
 
                 async.forEachOfSeries(initialusers, function (record, i, foreachcallback) {
                     var user = record.data;
@@ -98,9 +107,10 @@ module.exports = function(app) {
                         $near: coords,
                         $maxDistance: maxDistance
                     };
+
                     fieldsToSearch._created_at = {'$gte': new Date(record.start), '$lt': new Date(record.end)};
                     var fields = "_p_user longitude latitude battery model version accuracy confidence activity -_id";
-                    console.log(fieldsToSearch);
+
 
 
                     cm_data.find(fieldsToSearch, fields,{
@@ -437,6 +447,7 @@ module.exports = function(app) {
                 });
 
                 console.log("Final count: " + result.length);
+                result[0].length = result.length;
                 res.json(result);
             }
         });
