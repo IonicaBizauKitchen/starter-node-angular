@@ -8,7 +8,7 @@ angular.module('MainCtrl', []).controller('MainController', function($scope, $ht
         $scope.people = [];
         $scope.checked = false;
 
-        $http.get('http://'+window.location.host+'/query2', {params: {user: "_User$"+$scope.user, start: $scope.start, end: $scope.end, distance: $scope.distance}}).then(function successCallback(res) {
+        $http.get('http://'+window.location.host+'/query1', {params: {user: "_User$"+$scope.user, start: $scope.start, end: $scope.end, distance: $scope.distance}}).then(function successCallback(res) {
             console.log(JSON.stringify(res.data));
             console.log(res.data);
             $scope.checked = true;
