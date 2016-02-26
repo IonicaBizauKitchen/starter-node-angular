@@ -12,7 +12,7 @@ var db = require('./config/db');
 
 var port = process.env.PORT || 8080; // set our port
 mongoose.connect(db.url); // connect to our mongoDB database (commented out after you enter in your own credentials)
-mongoose.set('debug', true);
+//mongoose.set('debug', true);
 require('./app/models/cm_data')
 
 // get all data/stuff of the body (POST) parameters

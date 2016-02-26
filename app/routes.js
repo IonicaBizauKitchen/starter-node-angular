@@ -17,7 +17,8 @@ module.exports = function(app) {
     // server routes ===========================================================
 
     app.get('/query1', function(req, res){
-        console.log("Query:" + req.query);
+        console.log("Query:" + JSON.stringify(req.query));
+        console.time('one');
         async.waterfall([
 
             function(callback) {
@@ -78,7 +79,7 @@ module.exports = function(app) {
                 });
 
             },function(initialusers, callback) {
-                console.log("Initial User: " +JSON.stringify(initialusers));
+//                console.log("Initial User: " +JSON.stringify(initialusers));
 
                 var fieldsToSearch = {}, limit = 50, skip = 0,  sort = '_created_at', sortType= -1;
                 fieldsToSearch._p_user = {'$ne': req.query.user};
@@ -89,7 +90,7 @@ module.exports = function(app) {
 
                 async.forEachOfSeries(initialusers, function (record, i, foreachcallback) {
                     var user = record.data;
-                    console.log("user : " + record.data);
+//                    console.log("user : " + record.data);
                     var coords = [];
                     coords[0] = user.longitude;
                     coords[1] = user.latitude;
@@ -115,7 +116,7 @@ module.exports = function(app) {
 //                            console.log(JSON.stringify(data));
                             var current = [];
                             data.forEach(function(thisuser){
-                                console.log(JSON.stringify(thisuser));
+//                                console.log(JSON.stringify(thisuser));
                                 var usrObj = {
                                     start: record.start,
                                     end: record.end,
@@ -142,7 +143,7 @@ module.exports = function(app) {
 //                                extend(true, thisuser, usrObj, times);
 //                                console.log(JSON.stringify(usrObj));
 //                                console.log(JSON.stringify(times));
-                                console.log(JSON.stringify(usrObj));
+//                                console.log(JSON.stringify(usrObj));
                                 current.push(usrObj);
 
                             });
@@ -217,7 +218,7 @@ module.exports = function(app) {
                         console.log('file saved');
                     });
                 });
-
+                console.timeEnd('one');
                 console.log("Final count: " + result.length);
                 res.json(result);
             }
@@ -293,7 +294,7 @@ module.exports = function(app) {
                 });
 
             },function(initialusers, callback) {
-                console.log("Initial User: " +JSON.stringify(initialusers));
+//                console.log("Initial User: " +JSON.stringify(initialusers));
 
                 var fieldsToSearch = {}, limit = 50, skip = 0,  sort = '_created_at', sortType= -1;
 //                fieldsToSearch._p_user = {'$ne': req.query.user};
@@ -304,7 +305,7 @@ module.exports = function(app) {
 
                 async.forEachOfSeries(initialusers, function (record, i, foreachcallback) {
                     var user = record.data;
-                    console.log("user : " + record.data);
+//                    console.log("user : " + record.data);
                     var coords = [];
                     coords[0] = user.longitude;
                     coords[1] = user.latitude;
@@ -330,7 +331,7 @@ module.exports = function(app) {
 //                            console.log(JSON.stringify(data));
                             var current = [];
                             data.forEach(function(thisuser){
-                                console.log(JSON.stringify(thisuser));
+//                                console.log(JSON.stringify(thisuser));
                                 var usrObj = {
                                     start: record.start,
                                     end: record.end,
@@ -357,7 +358,7 @@ module.exports = function(app) {
 //                                extend(true, thisuser, usrObj, times);
 //                                console.log(JSON.stringify(usrObj));
 //                                console.log(JSON.stringify(times));
-                                console.log(JSON.stringify(usrObj));
+//                                console.log(JSON.stringify(usrObj));
                                 current.push(usrObj);
 
                             });
