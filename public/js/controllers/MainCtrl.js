@@ -7,6 +7,7 @@ angular.module('MainCtrl', []).controller('MainController', function($scope, $ht
     $scope.processForm = function() {
         $scope.people = [];
         $scope.checked = false;
+        $scope.checked2 = false;
 
         $http.get('http://'+window.location.host+'/query1', {params: {user: "_User$"+$scope.user, start: $scope.start, end: $scope.end, distance: $scope.distance}}).then(function successCallback(res) {
             console.log(JSON.stringify(res.data));
@@ -32,6 +33,7 @@ angular.module('MainCtrl', []).controller('MainController', function($scope, $ht
 
     $scope.processForm2 = function() {
         $scope.people = [];
+        $scope.checked = false;
         $scope.checked2 = false;
         $http.get('http://'+window.location.host+'/query2', {params: { start: $scope.start2, end: $scope.end2, distance: $scope.distance2}}).then(function successCallback(res) {
             console.log(JSON.stringify(res.data));
