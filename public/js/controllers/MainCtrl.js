@@ -51,10 +51,13 @@ angular.module('MainCtrl', []).controller('MainController', function($scope, $ht
             if (err) {
                 return errHandler(err);
             }
-            genpages(res.length);
-            $scope.checked = true;
-            total = res;
-            $scope.people = total.slice(0, 20);
+
+            $scope.$apply(function () {
+                genpages(res.length);
+                $scope.checked = true;
+                total = res;
+                $scope.people = total.slice(0, 20);
+            });
         });
 
 
@@ -90,10 +93,12 @@ angular.module('MainCtrl', []).controller('MainController', function($scope, $ht
             if (err) {
                 return errHandler(err);
             }
-            genpages(res.length);
-            $scope.checked2 = true;
-            total = res;
-            $scope.people = total.slice(0, 20);
+            $scope.$apply(function () {
+                genpages(res.length);
+                $scope.checked2 = true;
+                total = res;
+                $scope.people = total.slice(0, 20);
+            });
         });
 
 
