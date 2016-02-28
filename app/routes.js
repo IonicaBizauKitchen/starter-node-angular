@@ -15,19 +15,20 @@ module.exports = function(app) {
 //    });
 
     // server routes ===========================================================
+    //
 
-    app.get('/query1', function(req, res){
-        console.log("Query:" + JSON.stringify(req.query));
-        console.time('one');
+
+
+    function runQueryOne (queryData, callback){
+        console.log("Query:" + JSON.stringify(queryData));
         async.waterfall([
-
             function(callback) {
 
                 var diff = 5 * 60 * 1000; //5 minutes
-                var queryEndTimestamp = new Date(req.query.end);
+                var queryEndTimestamp = new Date(queryData.end);
                 var periods = [];
                 var records = [];
-                var start = new Date(req.query.start);
+                var start = new Date(queryData.start);
                 var end =new Date(start.getTime() ) ;
                 while(queryEndTimestamp.getTime() >=  start.getTime() + diff ){
 
@@ -40,7 +41,7 @@ module.exports = function(app) {
                 var sortQ = {};
                 sortQ[sort] = sortType;
 
-                fieldsToSearch._p_user = req.query.user;
+                fieldsToSearch._p_user = queryData.user;
 
                 async.forEachOfSeries(periods, function (period, i, foreachcallback) {
                     fieldsToSearch._created_at = {'$gte': new Date(period.start), '$lt': new Date(period.end)};
@@ -78,20 +79,21 @@ module.exports = function(app) {
                     callback(null, records);
                 });
 
-            },function(initialusers, callback) {
+            },
+            function(initialusers, callback) {
 //                console.log("Initial User: " +JSON.stringify(initialusers));
 
                 var fieldsToSearch = {}, limit = 0, skip = 0,  sort = '_created_at', sortType= -1;
-                fieldsToSearch._p_user = {'$ne': req.query.user};
+                fieldsToSearch._p_user = {'$ne': queryData.user};
                 var results = [];
-                var maxDistance = parseInt(req.query.distance)/6371;
+                var maxDistance = parseInt(queryData.distance)/6371;
                 var sortQ = {};
                 sortQ[sort] = sortType;
-//                if(req.query.limit)
+//                if(queryData.limit)
 //
 //
-//                if(req.query.skip) {
-//                    skip = parseInt(req.query.skip);
+//                if(queryData.skip) {
+//                    skip = parseInt(queryData.skip);
 //                    limit = 20;
 //                }
 
@@ -99,6 +101,9 @@ module.exports = function(app) {
 
                 async.forEachOfSeries(initialusers, function (record, i, foreachcallback) {
                     var user = record.data;
+                    if (!user) {
+                        return foreachcallback();
+                    }
 //                    console.log("user : " + record.data);
                     var coords = [];
                     coords[0] = user.longitude;
@@ -182,78 +187,70 @@ module.exports = function(app) {
 //            }
         ], function (err, result) {
             if(err){
-                res.send(500,err);
-            }else{
-                var fieldNames = ['Time Stamp',
-                    'Query UserID',
-                    'Longitude',
-                    'Latitude',
-                    'Battery',
-                    'Model',
-                    'Version',
-                    'Accuracy',
-                    'Confidence',
-                    'Activity',
-                    'Contact UserID',
-                    'Longitude',
-                    'Latitude',
-                    'Battery',
-                    'Model',
-                    'Version',
-                    'Accuracy',
-                    'Confidence',
-                    'Activity'];
-                var fields = ['end',
-                    'queryUserId',
-                    'queryUserLong',
-                    'queryUserLat',
-                    'queryUserBattery',
-                    'queryUserModel',
-                    'queryUserVersion',
-                    'queryUserAccuracy',
-                    'queryUserConfidence',
-                    'queryUserActivity',
-                    'userId',
-                    'userLong',
-                    'userLat',
-                    'userBattery',
-                    'userModel',
-                    'userVersion',
-                    'userAccuracy',
-                    'userConfidence',
-                    'userActivity'];
-                json2csv({ data: result, fields: fields, fieldNames: fieldNames, quotes: '' }, function(err, csv) {
-                    if (err) console.log(err);
-                    fs.writeFile('public/file.csv', csv, function(err) {
-                        if (err) throw err;
-                        console.log('file saved');
-                    });
+                return callback(err);
+                }
+            var fieldNames = ['Time Stamp',
+                'Query UserID',
+                'Longitude',
+                'Latitude',
+                'Battery',
+                'Model',
+                'Version',
+                'Accuracy',
+                'Confidence',
+                'Activity',
+                'Contact UserID',
+                'Longitude',
+                'Latitude',
+                'Battery',
+                'Model',
+                'Version',
+                'Accuracy',
+                'Confidence',
+                'Activity'];
+            var fields = ['end',
+                'queryUserId',
+                'queryUserLong',
+                'queryUserLat',
+                'queryUserBattery',
+                'queryUserModel',
+                'queryUserVersion',
+                'queryUserAccuracy',
+                'queryUserConfidence',
+                'queryUserActivity',
+                'userId',
+                'userLong',
+                'userLat',
+                'userBattery',
+                'userModel',
+                'userVersion',
+                'userAccuracy',
+                'userConfidence',
+                'userActivity'];
+            json2csv({ data: result, fields: fields, fieldNames: fieldNames, quotes: '' }, function(err, csv) {
+                if (err) console.log(err);
+                fs.writeFile('public/file.csv', csv, function(err) {
+                    if (err) throw err;
+                    console.log('file saved');
                 });
-                console.timeEnd('one');
-                console.log("Final count: " + result.length);
-                res.json(result);
-            }
+            });
+            //console.timeEnd('one');
+            console.log("Final count: " + result.length);
+            callback(null, result);
         });
+    }
 
-
-
-
-
-
-
-    });
-
-    app.get('/query2', function(req, res){
-        console.log("Query:" + JSON.stringify(req.query));
+    function runQueryTwo (queryData, callback){
+        console.log("Query:" + JSON.stringify(queryData));
         async.waterfall([
 
             function(callback) {
 
                 var diff = 5 * 60 * 1000; //5 minutes
-                var queryEndTimestamp = new Date(req.query.end);
+                var queryEndTimestamp = new Date(queryData.end);
                 var periods = [];
                 var records = [];
-                var start = new Date(req.query.start);
+                var start = new Date(queryData.start);
                 var end =new Date(start.getTime() ) ;
                 while(queryEndTimestamp.getTime() >=  start.getTime() + diff ){
 
@@ -266,7 +263,7 @@ module.exports = function(app) {
                 var sortQ = {};
                 sortQ[sort] = sortType;
 
-//                fieldsToSearch._p_user = req.query.user;
+//                fieldsToSearch._p_user = queryData.user;
 
                 async.forEachOfSeries(periods, function (period, i, foreachcallback) {
                     fieldsToSearch._created_at = {'$gte': new Date(period.start), '$lt': new Date(period.end)};
@@ -310,7 +307,7 @@ module.exports = function(app) {
                 var fieldsToSearch = {}, limit = 50, skip = 0,  sort = '_created_at', sortType= -1;
 
                 var results = [];
-                var maxDistance = parseInt(req.query.distance)/6371;
+                var maxDistance = parseInt(queryData.distance)/6371;
                 var sortQ = {};
                 sortQ[sort] = sortType;
 
@@ -318,6 +315,9 @@ module.exports = function(app) {
                     var user = record.data;
 //                    console.log("user : " + record.data);
                     var coords = [];
+                    if (!user) {
+                        return foreachcallback();
+                    }
                     coords[0] = user.longitude;
                     coords[1] = user.latitude;
                     fieldsToSearch.loc = {
@@ -340,6 +340,8 @@ module.exports = function(app) {
                                 return foreachcallback(err);
                             }
 
+                            if (data.length)
+                            debugger
 //                            console.log(JSON.stringify(data));
                             var current = [];
                             data.forEach(function(thisuser){
@@ -379,8 +381,6 @@ module.exports = function(app) {
                             results = results.concat(current);
 
                             foreachcallback();
-
-
                         });
 
                 }, function (err) {
@@ -397,68 +397,79 @@ module.exports = function(app) {
 //                callback(null, 'done');
 //            }
         ], function (err, result) {
-            if(err){
-                res.send(500,err);
-            }else{
-                var fieldNames = ['Time Stamp',
-                    'Query UserID',
-                    'Longitude',
-                    'Latitude',
-                    'Battery',
-                    'Model',
-                    'Version',
-                    'Accuracy',
-                    'Confidence',
-                    'Activity',
-                    'Contact UserID',
-                    'Longitude',
-                    'Latitude',
-                    'Battery',
-                    'Model',
-                    'Version',
-                    'Accuracy',
-                    'Confidence',
-                    'Activity'];
-                var fields = ['end',
-                    'queryUserId',
-                    'queryUserLong',
-                    'queryUserLat',
-                    'queryUserBattery',
-                    'queryUserModel',
-                    'queryUserVersion',
-                    'queryUserAccuracy',
-                    'queryUserConfidence',
-                    'queryUserActivity',
-                    'userId',
-                    'userLong',
-                    'userLat',
-                    'userBattery',
-                    'userModel',
-                    'userVersion',
-                    'userAccuracy',
-                    'userConfidence',
-                    'userActivity'];
-                json2csv({ data: result, fields: fields, fieldNames: fieldNames, quotes: '' }, function(err, csv) {
-                    if (err) console.log(err);
-                    fs.writeFile('public/file2.csv', csv, function(err) {
-                        if (err) throw err;
-                        console.log('file saved');
-                    });
+            if(err){ return callback(err); }
+            var fieldNames = ['Time Stamp',
+                'Query UserID',
+                'Longitude',
+                'Latitude',
+                'Battery',
+                'Model',
+                'Version',
+                'Accuracy',
+                'Confidence',
+                'Activity',
+                'Contact UserID',
+                'Longitude',
+                'Latitude',
+                'Battery',
+                'Model',
+                'Version',
+                'Accuracy',
+                'Confidence',
+                'Activity'];
+            var fields = ['end',
+                'queryUserId',
+                'queryUserLong',
+                'queryUserLat',
+                'queryUserBattery',
+                'queryUserModel',
+                'queryUserVersion',
+                'queryUserAccuracy',
+                'queryUserConfidence',
+                'queryUserActivity',
+                'userId',
+                'userLong',
+                'userLat',
+                'userBattery',
+                'userModel',
+                'userVersion',
+                'userAccuracy',
+                'userConfidence',
+                'userActivity'];
+
+
+            json2csv({ data: result, fields: fields, fieldNames: fieldNames, quotes: '' }, function(err, csv) {
+                if (err) console.log(err);
+                fs.writeFile('public/file2.csv', csv, function(err) {
+                    if (err) throw err;
+                    console.log('file saved');
                 });
+            });
 
-                console.log("Final count: " + result.length);
-                result[0].length = result.length;
-                res.json(result);
-            }
+            console.log("Final count: " + result.length);
+            callback(null, result);
         });
+    }
 
+    function httpInterface(func) {
+        return function (req, res) {
+            func(req.query, function (err, data) {
+                if (err) { return res.status(400).end(err); }
+                res.json(data);
+            });
+        };
+    }
 
-
-
-
-
-
+    var io = require('socket.io')(app.server);
+    io.on('connection', function(socket){
+        socket.on('queryOne', runQueryOne);
+        socket.on('queryTwo', runQueryTwo);
     });
+
+
+    // Http routes
+    app.get('/query1', httpInterface(runQueryOne));
+    app.get('/query2', httpInterface(runQueryTwo));
 
     app.get('*', function(req, res) {
         res.sendfile('./public/index.html');
